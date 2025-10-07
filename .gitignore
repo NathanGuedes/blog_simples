@@ -1,0 +1,21 @@
+# Composer
+/vendor/
+/composer.lock
+
+# IDEs
+/.idea/
+/.vscode/
+
+# Sistema
+*.log
+*.tmp
+.DS_Store
+
+# Docker
+/docker-compose.override.yml
+
+.env
+
+php-docker.sh
+phpcs-docker.sh
+composer.phar
