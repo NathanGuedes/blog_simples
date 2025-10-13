@@ -8,16 +8,16 @@ class CommentsDTO
 {
     private ?int $id;
     private string $content;
-    private int $user_id;
-    private int $post_id;
+    private ?int $user_id;
+    private ?int $post_id;
     private ?DateTimeImmutable $create_at;
 
     public function __construct(array $data)
     {
         $this->id = $data['id'] ?? null;
         $this->content = $data['content'];
-        $this->user_id = $data['user_id'];
-        $this->post_id = $data['post_id'];
+        $this->user_id = $data['user_id']?? null;
+        $this->post_id = $data['post_id']?? null;
         $this->create_at = $data['date'] ?? null;
     }
 

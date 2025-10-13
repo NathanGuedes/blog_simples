@@ -34,4 +34,37 @@ class CommentsService
         $this->commentsRepository->create($comments);
 
     }
+
+    /**
+     * @throws ValidationException
+     */
+    public function destroy(int $comment_id, array $form_data): void
+    {
+        if (! $form_data['post_owner_id'] === $_SESSION['user']['user_id'] || ! $form_data['comment_owner_id'] === $_SESSION['user']['user_id']){
+            throw new ValidationException('error');
+        }
+
+        $this->commentsRepository->delete($comment_id);
+    }
+
+    /**
+     * @throws ValidationException
+     */
+    public function update(mixed $comment_id, array $form_data)
+    {
+        $validator = new Validator();
+        $validator
+            ->required('content', $form_data['content'] ?? null, 'Content')
+            ->maxLength('content', $form_data['content'] ?? null, 1000, 'Content');
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->getErrors());
+        }
+        if (! $form_data['comment_owner_id'] === $_SESSION['user']['user_id']){
+            throw new ValidationException('error');
+        }
+        $comment = new CommentsDTO($form_data);
+
+        $this->commentsRepository->update($comment);
+    }
 }

@@ -71,14 +71,14 @@ $this->layout('layouts/master', ['title' => 'User Profile']) ?>
                                         <span class="block text-xl font-bold text-gray-900"><?= count($posts) ?></span>
                                         <span class="text-sm text-gray-600">publicações</span>
                                     </div>
-<!--                                    <div class="text-center">-->
-<!--                                        <span class="block text-xl font-bold text-gray-900">--><?php //= $profileUser['followers'] ?? 0 ?><!--</span>-->
-<!--                                        <span class="text-sm text-gray-600">seguidores</span>-->
-<!--                                    </div>-->
-<!--                                    <div class="text-center">-->
-<!--                                        <span class="block text-xl font-bold text-gray-900">--><?php //= $profileUser['following'] ?? 0 ?><!--</span>-->
-<!--                                        <span class="text-sm text-gray-600">seguindo</span>-->
-<!--                                    </div>-->
+                                    <div class="text-center">
+                                        <span class="block text-xl font-bold text-gray-900"><?= $profileUser['followers'] ?? 0 ?></span>
+                                        <span class="text-sm text-gray-600">seguidores</span>
+                                    </div>
+                                    <div class="text-center">
+                                        <span class="block text-xl font-bold text-gray-900"><?= $profileUser['following'] ?? 0 ?></span>
+                                        <span class="text-sm text-gray-600">seguindo</span>
+                                    </div>
                                 </div>
 
                                 <!-- Bio -->

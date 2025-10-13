@@ -11,7 +11,7 @@ interface CommentsRepositoryInterface
 
     public function update(CommentsDTO $comments): void;
 
-    public function delete(string $id): void;
+    public function delete(int $id): void;
 
-    public function findById(string $id): bool|array;
+    public function findById(int $id): bool|array;
 }

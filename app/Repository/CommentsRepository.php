@@ -26,15 +26,24 @@ readonly class CommentsRepository implements CommentsRepositoryInterface
 
     public function update(CommentsDTO $comments): void
     {
-        // TODO: Implement update() method.
+        $sql = "UPDATE comments SET content = :content WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'content' => $comments->getContent(),
+            'id' => $comments->getId()
+        ]);
     }
 
-    public function delete(string $id): void
+    public function delete(int $id): void
     {
-        // TODO: Implement delete() method.
+        $sql = "DELETE FROM comments WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'id' => $id
+        ]);
     }
 
-    public function findById(string $id): bool|array
+    public function findById(int $id): bool|array
     {
         // TODO: Implement findById() method.
     }

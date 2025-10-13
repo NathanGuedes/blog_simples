@@ -91,7 +91,8 @@ try {
         $controller->store($data);
     }, ['auth', 'active']);
 
-
+    $router->add('POST', '/comment/delete/{id:\d+}', [CommentsController::class, 'destroyComment'], ['auth', 'active']);
+    $router->add('POST', '/comment/update/{id:\d+}', [CommentsController::class, 'updateComment'], ['auth', 'active']);
 
     $router->run();
 } catch (Exception $e) {
