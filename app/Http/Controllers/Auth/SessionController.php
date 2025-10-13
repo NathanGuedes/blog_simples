@@ -15,7 +15,9 @@ use Support\Flash;
 class SessionController extends Controller implements ControllerInterface
 {
 
-    public function __construct(private readonly SessionService $sessionService) {}
+    public function __construct(private readonly SessionService $sessionService)
+    {
+    }
 
     /**
      * @throws Exception
@@ -39,7 +41,7 @@ class SessionController extends Controller implements ControllerInterface
                 Flash::set('error', $errors);
             }
             Response::redirect("/login", $request);
-        } catch (ActiveValidationException){
+        } catch (ActiveValidationException) {
             Response::redirect("/email/activation/send");
         } catch (Exception) {
             Flash::set('error', "Não foi possivel, concluir seu login, tente mais tarde.");

@@ -3,8 +3,11 @@
 namespace Repository;
 
 use Contracts\UserRepositoryInterface;
-use Models\User;
+use Models\UserDTO;
 use PDO;
+use Random\RandomException;
+use Support\Token;
+use Symfony\Component\Uid\Uuid;
 
 readonly class UserRepository implements UserRepositoryInterface
 {
@@ -12,17 +15,20 @@ readonly class UserRepository implements UserRepositoryInterface
     {
     }
 
-    public function create(User $user): void
+    /**
+     * @throws RandomException
+     */
+    public function create(UserDTO $user): void
     {
         $sql = "INSERT INTO users (name, email, password, token, token_validity, created_at) VALUES (:name, :email, :password, :token, :token_validity, :created_at)";
 
         $statement = $this->pdo->prepare($sql);
 
         $statement->execute([
-            "name" => $user->getName(),
-            "email" => $user->getEmail(),
-            "password" => $user->getPasswordHash(),
-            "token" => $user->getToken(),
+            "name" => $user->name,
+            "email" => $user->email,
+            "password" => password_hash($user->password, PASSWORD_DEFAULT),
+            "token" => Token::genToken(),
             "token_validity" => date('Y-m-d H:i:s', time() + 15 * 60),
             "created_at" => date('Y-m-d H:i:s')
         ]);
@@ -30,7 +36,7 @@ readonly class UserRepository implements UserRepositoryInterface
 
     }
 
-    public function update(User $user): void
+    public function update(UserDTO $user): void
     {
         // TODO: Implement update() method.
     }

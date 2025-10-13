@@ -18,7 +18,9 @@ class DatabaseConnection
 
         if (static::$instance === null) {
             try{
-                static::$instance = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
+                static::$instance = new PDO($dsn, $_ENV['DB_USER'], $_ENV['DB_PASSWORD'], [
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                ]);
             } catch (PDOException $e){
                 throw new PDOException($e->getMessage());
             }

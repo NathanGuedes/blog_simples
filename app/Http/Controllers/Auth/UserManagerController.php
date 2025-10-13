@@ -31,7 +31,6 @@ class UserManagerController extends Controller
     public function startSendEmailActivation(string $userEmail): void
     {
         $user = $this->sessionManager->get('user');
-
         $this->userManagerService->emailActiveSend($user);
 
         $this->sessionService->killSession();
@@ -112,7 +111,7 @@ class UserManagerController extends Controller
             foreach ($e->getErrors() as $field => $error) {
                 Flash::set($field, $error);
             }
-            Response::redirect("/forgot/password/email/recovery/" . $e->getErrors()['token']);
+            Response::redirect("/forgot/password/email/recovery/" . $e->getErrors()['__token']);
         }
 
         Flash::set('success', 'Senha alterada com sucesso!');

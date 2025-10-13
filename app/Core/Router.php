@@ -54,13 +54,10 @@ class Router
         $httpMethod = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
+
         $uri = $uri !== '/' ? rtrim($uri, '/') : $uri;
-
-
         $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
-
         $this->validatedMiddleware($uri);
-
         try {
             $this->handler($routeInfo);
         } catch (DependencyException|NotFoundException|Exception $e) {
@@ -127,7 +124,7 @@ class Router
     /**
      * @param string $uri
      * @return void
-     * @throws Exception
+     * @throws Exception|\Exception
      */
     public function validatedMiddleware(string $uri): void
     {

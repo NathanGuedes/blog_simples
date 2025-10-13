@@ -11,7 +11,7 @@ class Flash
         }
     }
 
-    public static function get(string $index)
+    public static function get(string $index): string
     {
         $value = '';
 

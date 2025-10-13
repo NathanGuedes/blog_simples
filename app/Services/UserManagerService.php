@@ -13,6 +13,7 @@ use Exceptions\ValidationException;
 use PDO;
 use Random\RandomException;
 use Support\Token;
+use Utils\Validator;
 use Validators\ForgotPasswordFormValidator;
 
 readonly class UserManagerService
@@ -68,7 +69,6 @@ readonly class UserManagerService
                 'email' => $user['email']
             ]);
         }
-
         $this->updateTokenAndActive($token);
 
     }
@@ -101,16 +101,22 @@ readonly class UserManagerService
     /**
      * @throws ValidationException
      */
-    public function updatePassword(array $formData): string
+    public function updatePassword(array $data): string
     {
-        $error = ForgotPasswordFormValidator::validate($formData);
+        $validator = new Validator();
+        $validator
+            ->required('password', $data['password'] ?? null, 'Password')
+            ->required('password_confirm', $data['password_confirm'] ?? null, 'Password Confirm')
+            ->minLength('password', $data['password'] ?? null, 6, 'Password')
+            ->passwordMatch('password', [$data['password'], $data['password_confirm']], 'Password')
+            ->token('__token', $data['__token'] ?? null, 'Token');
 
-        if (!empty($error)) {
-            throw new ValidationException($error);
+        if ($validator->fails()) {
+            throw new ValidationException($validator->getErrors());
         }
 
-        $password = password_hash($formData['password'], PASSWORD_DEFAULT);
-        $token = $formData['__token'];
+        $password = password_hash($data['password'], PASSWORD_DEFAULT);
+        $token = $data['__token'];
 
         $user = $this->userRepository->findByToken($token);
 

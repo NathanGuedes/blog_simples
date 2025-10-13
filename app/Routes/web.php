@@ -7,13 +7,16 @@ use Core\Router;
 use Http\Controllers\Auth\RegisterController;
 use Http\Controllers\Auth\SessionController;
 use Http\Controllers\Auth\UserManagerController;
-use Http\Controllers\HomeController;
+use Http\Controllers\CommentsController;
+use Http\Controllers\FeedController;
+use Http\Controllers\PostsController;
+use Http\Controllers\UserPostsController;
 
 try {
     $router = $container->get(Router::class);
 
     // Home
-    $router->add('GET', '/', [HomeController::class, 'index']);
+    $router->add('GET', '/', [FeedController::class, 'index'], ['auth', 'active']);
 
     // Register
     $router->add('GET', '/register', [RegisterController::class, 'index'], ['guest']);
@@ -61,6 +64,34 @@ try {
         $data = (Request::create())->post;
         $controller->updatePassword($data);
     }, ['guest']);
+
+    // Posts
+
+    $router->add('POST', '/posts/create', function () use ($container) {
+        $controller = $container->get(PostsController::class);
+        $request = $container->get(Request::class)->post;
+        $controller->store($request);
+    }, ['auth', 'active']);
+
+    $router->add('GET', '/post/{id:\d+}', [PostsController::class, 'showPost'], ['auth', 'active']);
+    $router->add('POST', '/post/delete/{id:\d+}', [PostsController::class, 'destroyPost'], ['auth', 'active']);
+    $router->add('GET', '/post/edit/{id:\d+}', [PostsController::class, 'updatePostForm'], ['auth', 'active']);
+
+    $router->add('GET', '/user/profile/{user:\d+}', [UserPostsController::class, 'index'], ['auth', 'active']);
+
+    $router->add('POST', '/posts/update', function () use ($container){
+        $controller = $container->get(PostsController::class);
+        $data = (Request::create())->post;
+        $controller->updatePost($data);
+    }, ['auth', 'active']);
+
+    $router->add('POST', '/comment/create', function () use ($container){
+        $controller = $container->get(CommentsController::class);
+        $data = (Request::create())->post;
+        $controller->store($data);
+    }, ['auth', 'active']);
+
+
 
     $router->run();
 } catch (Exception $e) {

@@ -29,7 +29,7 @@ $this->layout('layouts/auth', ['title' => 'Register']) ?>
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Nome completo</label>
                     <div class="relative">
-                        <input type="text" id="name" name="name" required
+                        <input type="text" id="name" name="name"
                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white/50 backdrop-blur-sm"
                                placeholder="Seu nome completo"
                                value="<?= flashOld('nameField') ?>">
@@ -53,7 +53,7 @@ $this->layout('layouts/auth', ['title' => 'Register']) ?>
                 <div>
                     <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Senha</label>
                     <div class="relative">
-                        <input type="password" id="password" name="password" required
+                        <input type="password" id="password" name="password"
                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white/50 backdrop-blur-sm"
                                placeholder="••••••••">
                     </div>
@@ -64,7 +64,7 @@ $this->layout('layouts/auth', ['title' => 'Register']) ?>
                 <div>
                     <label for="confirm_password" class="block text-sm font-medium text-gray-700 mb-2">Confirme a senha</label>
                     <div class="relative">
-                        <input type="password" id="confirm_password" name="password_confirm" required
+                        <input type="password" id="confirm_password" name="password_confirm"
                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white/50 backdrop-blur-sm"
                                placeholder="••••••••">
                     </div>

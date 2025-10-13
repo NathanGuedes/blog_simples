@@ -35,14 +35,11 @@ class RegisterController extends Controller implements ControllerInterface
         try {
             $this->registerService->register($request);
         } catch (ValidationException $e) {
-            dd($e->getMessage());
             $this->handleValidationException($e);
         } catch (PDOException $e) {
-            dd($e->getMessage());
             $this->handlePdoException($e);
-        } catch (RandomException|Exception $e) {
-            dd($e->getMessage());
-            $this->handleGenericException();
+        } catch (Exception $e) {
+            $this->handleGenericException($e);
         }
 
         Response::redirect("/login", Request::create()->post ?? []);
@@ -58,7 +55,7 @@ class RegisterController extends Controller implements ControllerInterface
 
     private function handlePdoException(PDOException $e): void
     {
-        if ($e->getCode() == 23000) {
+        if ($e->getCode() == 23505) {
             Flash::set('email', "Já existe uma conta com este e-mail. Tente fazer login ou use outro e-mail.");
             Response::redirect("/register", Request::create()->post);
         }

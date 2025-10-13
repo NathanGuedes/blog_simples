@@ -5,8 +5,8 @@ class Auth
 {
     public function handle(): void
     {
-        if (! $_SESSION['user'] ?? false) {
-            header('Location: /');
+        if (! array_key_exists('user', $_SESSION)) {
+            header('Location: /login');
             exit();
         }
     }

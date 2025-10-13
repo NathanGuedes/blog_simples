@@ -2,12 +2,16 @@
 
 namespace Providers;
 
+use Contracts\CommentsRepositoryInterface;
 use Contracts\EmailServiceInterface;
+use Contracts\PostRepositoryInterface;
 use Contracts\SessionInterface;
 use Contracts\UserRepositoryInterface;
 use Core\Request;
 use Database\DatabaseConnection;
 use PDO;
+use Repository\CommentsRepository;
+use Repository\PostRepository;
 use Repository\UserRepository;
 use Services\RegisterService;
 use Services\SessionService;
@@ -24,6 +28,8 @@ class AppServiceProvider
                 return DatabaseConnection::connect();
             },
             UserRepositoryInterface::class => \DI\autowire(UserRepository::class),
+            PostRepositoryInterface::class => \DI\autowire(PostRepository::class),
+            CommentsRepositoryInterface::class => \DI\autowire(CommentsRepository::class),
             SessionInterface::class => \DI\autowire(SessionManager::class),
             EmailServiceInterface::class => \DI\autowire(Mailer::class),
 

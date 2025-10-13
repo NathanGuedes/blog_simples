@@ -2,12 +2,12 @@
 
 namespace Contracts;
 
-use Models\User;
+use Models\UserDTO;
 
 interface UserRepositoryInterface
 {
-    public function create(User $user): void;
-    public function update(User $user): void;
+    public function create(UserDTO $user): void;
+    public function update(UserDTO $user): void;
     public function delete(string $id): void;
 
     public function findById(string $id): bool|array;

@@ -6,7 +6,7 @@ use Contracts\SessionInterface;
 use Contracts\UserRepositoryInterface;
 use Exceptions\ActiveValidationException;
 use Exceptions\ValidationException;
-use Validators\SessionFormValidator;
+use Utils\Validator;
 
 class SessionService
 {
@@ -23,17 +23,22 @@ class SessionService
      * @throws ValidationException
      * @throws ActiveValidationException
      */
-    public function session(array $formData): void
+    public function session(array $data): void
     {
-        $error = SessionFormValidator::validate($formData);
 
-        if (!empty($error)) {
-            throw new ValidationException($error);
+        $validator = new Validator();
+        $validator
+            ->required('email', $data['email'] ?? null, 'Email')
+            ->email('email', $data['email'] ?? null, 'Email')
+            ->required('password', $data['password'] ?? null, 'Password');
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->getErrors());
         }
 
-        $user = $this->userRepository->findByEmail($formData['email']);
+        $user = $this->userRepository->findByEmail($data['email']);
 
-        if (!$user || !password_verify($formData['password'], $user['password'])) {
+        if (!$user || !password_verify($data['password'], $user['password'])) {
             throw new ValidationException('Email or password is incorrect');
         }
 
@@ -46,16 +51,15 @@ class SessionService
     }
 
     /**
-     * @param array $formData
+     * @param array $data
      * @return void
      */
-    public function startSessionLogin(array $formData): void
+    public function startSessionLogin(array $data): void
     {
-        $this->sessionManager->set('user', [
-            'email' => $formData['email'],
-            'name' => $formData['name'],
-            'active' => $formData['active']
-        ]);
+        $this->sessionManager
+            ->set(
+                'user', ['user_id' => $data['id'], 'email' => $data['email'], 'name' => $data['name'], 'active' => $data['active']
+            ]);
 
         $this->sessionManager->regenerate();
     }
